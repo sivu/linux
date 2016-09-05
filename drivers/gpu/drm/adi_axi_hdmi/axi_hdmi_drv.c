@@ -193,8 +193,10 @@ static int axi_hdmi_platform_probe(struct platform_device *pdev)
 	}
 
 	if (!slave_node)
+	{
+		dev_err(&pdev->dev,"no port or encoder-slave");
 		return -EINVAL;
-
+	}
 	private->is_rgb = of_property_read_bool(np, "adi,is-rgb");
 
 	id = of_match_node(adv7511_encoder_of_match, np);
