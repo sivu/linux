@@ -174,7 +174,7 @@ static int axi_hdmi_platform_probe(struct platform_device *pdev)
 	if (IS_ERR(private->hdmi_clock)) {
 		return -EPROBE_DEFER;
 	}
-
+/*
 	ep_node = of_graph_get_next_endpoint(np, NULL);
 	if (ep_node) {
 		ret = of_graph_parse_endpoint(ep_node, &ep);
@@ -189,8 +189,9 @@ static int axi_hdmi_platform_probe(struct platform_device *pdev)
 		slave_node = of_graph_get_remote_port_parent(ep_node);
 		of_node_put(ep_node);
 	} else {
+	*/
 		slave_node = of_parse_phandle(np, "encoder-slave", 0);
-	}
+//	}
 
 	if (!slave_node)
 	{
