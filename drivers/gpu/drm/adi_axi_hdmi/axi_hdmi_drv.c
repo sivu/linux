@@ -206,12 +206,16 @@ static int axi_hdmi_platform_probe(struct platform_device *pdev)
 	of_node_put(slave_node);
 
 	if (!private->encoder_slave || !private->encoder_slave->dev.driver)
+	{
+		dev_info(&pdev->dev,"defined encoder-slave not found, deferring");
 		return -EPROBE_DEFER;
-
+	}
 	private->dma = dma_request_slave_channel(&pdev->dev, "video");
 	if (private->dma == NULL)
+	{
+		
 		return -EPROBE_DEFER;
-
+	}
 	platform_set_drvdata(pdev, private);
 
 	return drm_platform_init(&axi_hdmi_driver, pdev);
