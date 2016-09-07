@@ -66,8 +66,6 @@ static int axi_hdmi_load(struct drm_device *dev, unsigned long flags)
 
 	drm_mode_config_init(dev);
 
-	/* init kms poll for handling hpd */
-	drm_kms_helper_poll_init(dev);
 
 	axi_hdmi_mode_config_init(dev);
 
@@ -89,6 +87,8 @@ static int axi_hdmi_load(struct drm_device *dev, unsigned long flags)
 		ret = PTR_ERR(private->fbdev);
 		goto err_crtc;
 	}
+	/* init kms poll for handling hpd */
+	drm_kms_helper_poll_init(dev);
 
 	return 0;
 
@@ -213,7 +213,7 @@ static int axi_hdmi_platform_probe(struct platform_device *pdev)
 	private->dma = dma_request_slave_channel(&pdev->dev, "video");
 	if (private->dma == NULL)
 	{
-		
+
 		return -EPROBE_DEFER;
 	}
 	platform_set_drvdata(pdev, private);

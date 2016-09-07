@@ -110,8 +110,6 @@ static struct dma_async_tx_descriptor
 
 static int axi_hdmi_crtc_update(struct drm_crtc *crtc)
 {
-	DRM_INFO("hdmi_crtc_update");
-
 	struct axi_hdmi_crtc *axi_hdmi_crtc = to_axi_hdmi_crtc(crtc);
 	struct drm_display_mode *mode = &crtc->mode;
 	struct drm_framebuffer *fb = crtc->primary->fb;
@@ -119,13 +117,10 @@ static int axi_hdmi_crtc_update(struct drm_crtc *crtc)
 	struct drm_gem_cma_object *obj;
 
 	if (!mode || !fb)
-	{
-		DRM_ERROR("no mode or fb!");
 		return -EINVAL;
-	}
+
 	dmaengine_terminate_all(axi_hdmi_crtc->dma);
 
-	DRM_INFO("crtc->mode %s (%d)",axi_hdmi_crtc->mode == DRM_MODE_DPMS_ON ? "on" : "off", axi_hdmi_crtc->mode);
 	if (axi_hdmi_crtc->mode == DRM_MODE_DPMS_ON) {
 		obj = drm_fb_cma_get_gem_obj(fb, 0);
 		if (!obj)
@@ -143,7 +138,6 @@ static int axi_hdmi_crtc_update(struct drm_crtc *crtc)
 			pr_err("Failed to prepare DMA descriptor\n");
 			return -ENOMEM;
 		} else {
-			DRM_INFO("dmaengine_submit");
 			dmaengine_submit(desc);
 			dma_async_issue_pending(axi_hdmi_crtc->dma);
 		}
@@ -154,8 +148,6 @@ static int axi_hdmi_crtc_update(struct drm_crtc *crtc)
 
 static void axi_hdmi_crtc_dpms(struct drm_crtc *crtc, int mode)
 {
-		DRM_INFO("crtc_dpms %d",mode);
-
 	struct axi_hdmi_crtc *axi_hdmi_crtc = to_axi_hdmi_crtc(crtc);
 
 	if (axi_hdmi_crtc->mode != mode) {
@@ -166,8 +158,6 @@ static void axi_hdmi_crtc_dpms(struct drm_crtc *crtc, int mode)
 
 static void axi_hdmi_crtc_prepare(struct drm_crtc *crtc)
 {
-		DRM_INFO("crtc_prepare");
-
 	struct axi_hdmi_crtc *axi_hdmi_crtc = to_axi_hdmi_crtc(crtc);
 
 	dmaengine_terminate_all(axi_hdmi_crtc->dma);
@@ -175,8 +165,6 @@ static void axi_hdmi_crtc_prepare(struct drm_crtc *crtc)
 
 static void axi_hdmi_crtc_commit(struct drm_crtc *crtc)
 {
-		DRM_INFO("crtc_commit");
-
 	struct axi_hdmi_crtc *axi_hdmi_crtc = to_axi_hdmi_crtc(crtc);
 
 	axi_hdmi_crtc->mode = DRM_MODE_DPMS_ON;
@@ -187,8 +175,6 @@ static int axi_hdmi_crtc_mode_set(struct drm_crtc *crtc,
 	struct drm_display_mode *mode, struct drm_display_mode *adjusted_mode,
 	int x, int y, struct drm_framebuffer *old_fb)
 {
-		DRM_INFO("crtc_mode_set");
-
 	/* We do everything in commit() */
 	return 0;
 }
@@ -196,8 +182,6 @@ static int axi_hdmi_crtc_mode_set(struct drm_crtc *crtc,
 static int axi_hdmi_crtc_mode_set_base(struct drm_crtc *crtc, int x, int y,
 	struct drm_framebuffer *old_fb)
 {
-		DRM_INFO("crtc_mode_set_base");
-
 	return axi_hdmi_crtc_update(crtc);
 }
 
@@ -211,7 +195,6 @@ static struct drm_crtc_helper_funcs axi_hdmi_crtc_helper_funcs = {
 
 static void axi_hdmi_crtc_destroy(struct drm_crtc *crtc)
 {
-	DRM_INFO("crtc_destroy");
 	struct axi_hdmi_crtc *axi_hdmi_crtc = to_axi_hdmi_crtc(crtc);
 
 	drm_crtc_cleanup(crtc);
@@ -226,7 +209,6 @@ static struct drm_crtc_funcs axi_hdmi_crtc_funcs = {
 
 struct drm_crtc *axi_hdmi_crtc_create(struct drm_device *dev)
 {
-	DRM_INFO("crtc_create");
 	struct axi_hdmi_private *p = dev->dev_private;
 	struct axi_hdmi_crtc *axi_hdmi_crtc;
 	struct drm_crtc *crtc;
